@@ -6,7 +6,12 @@ import { validateData } from '../utils/validator.js';
 
 export const getAllBoats = async (req, res) => {
   try {
-    const allBoats = await boatModel.find().populate('material').populate('boatType').exec();
+    const allBoats = await boatModel
+      .find()
+      .sort({ _id: -1 })
+      .populate('material')
+      .populate('boatType')
+      .exec();
 
     res.status(200).json(allBoats);
   } catch (error) {

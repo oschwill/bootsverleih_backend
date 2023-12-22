@@ -12,6 +12,8 @@ app.use(cors());
 app.use(express.json());
 app.use(xss());
 
+// static files
+app.use('/data/images', express.static('data/images'));
 // DATABASE CONNECTION
 connectDB();
 // Image Folder erstellen
