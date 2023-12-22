@@ -41,6 +41,8 @@ export const saveBoat = async (req, res) => {
   const imageFile = req.file;
   boat.imagePath = null;
 
+  console.log(imageFile);
+
   // check if file
   if (imageFile) {
     const hasWriteFile = await writeImage(imageFile, boat);

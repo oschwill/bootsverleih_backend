@@ -14,6 +14,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
     "file-type": "^18.7.0",
     "fs.promises": "^0.1.2",
     "joi": "^17.11.0",
