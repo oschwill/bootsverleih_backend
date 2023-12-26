@@ -22,7 +22,11 @@ export const saveReservation = async (req, res) => {
 
 export const getAllReservations = async (req, res) => {
   try {
-    const allReservations = await reservationModel.find().populate('reservedBoat').exec();
+    const allReservations = await reservationModel
+      .find()
+      .populate('reservedBoat')
+      .sort({ _id: -1 })
+      .exec();
 
     res.status(200).json(allReservations);
   } catch (error) {
@@ -34,8 +38,14 @@ export const getAllReservations = async (req, res) => {
 export const getFreeBoats = async (req, res) => {
   const { startDate, endDate } = req.body;
 
+  if (!startDate || !endDate || startDate === 'undefined' || endDate === 'undefined') {
+    console.log('first');
+    res.status(400).json({ message: 'Fehler beim Filtern der Daten' });
+    return;
+  }
+
   try {
-    /* UND NUN FOLGT...ein...äh...was mache ich hier eigentlich. */
+    /* UND NUN FOLGT...ein...was mache ich hier eigentlich. */
     // Holen uns erstmal alle Boote die noch nie reserviert wurden!
     let allReservedBoatIDs = await reservationModel.find().distinct('reservedBoat').exec();
     let unReservedBoats = await boatModel.find().where('_id').nin(allReservedBoatIDs).exec();

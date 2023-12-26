@@ -1,6 +1,7 @@
 import boatMaterialModel from '../models/boatMaterialModel.js';
 import boatModel from '../models/boatModel.js';
 import boatTypeModel from '../models/boatTypeModel.js';
+import reservationModel from '../models/reservationModel.js';
 import { deleteImage, writeImage, replaceImage } from '../utils/fileStructure.js';
 import { validateData } from '../utils/validator.js';
 
@@ -29,7 +30,16 @@ export const getSingleBoats = async (req, res) => {
       .populate('boatType')
       .exec();
 
-    res.status(200).json(singleBoat);
+    // Hole Reservierungen
+    const reservations = await reservationModel.find(
+      { reservedBoat: singleBoat._id },
+      { reservationNumber: 1, reservedStartDate: 1, reservedEndDate: 1, _id: 0 }
+    );
+
+    res.status(200).json({
+      data: singleBoat,
+      reservations: reservations,
+    });
   } catch (error) {
     res.status(400).json({ message: 'Fehler beim Holen der Daten!' });
     return;
@@ -162,9 +172,14 @@ export const deleteBoat = async (req, res) => {
     const filter = { _id: id };
 
     // delete image
-    await deleteImage(path.imagePath);
+    if (path.imagePath) {
+      await deleteImage(path.imagePath);
+    }
 
     await boatModel.findByIdAndDelete(filter);
+
+    // Wir sollten auch vorhandene Reservierungen löschen!!
+    await reservationModel.deleteMany({ reservedBoat: id });
 
     res.status(201).json({ message: 'Datensatz erfolgreich gelöscht!' });
   } catch (error) {
