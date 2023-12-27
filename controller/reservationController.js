@@ -92,3 +92,28 @@ export const getFreeBoats = async (req, res) => {
     return;
   }
 };
+
+export const deleteReservation = async (req, res) => {
+  const { rnr } = req.params;
+  console.log(rnr);
+  if (!rnr || rnr === undefined) {
+    res.status(400).json({ message: 'Fehler beim finden der Reserverierungsnummer' });
+    return;
+  }
+
+  try {
+    const hasDeleted = await reservationModel.deleteOne({ reservationNumber: rnr });
+
+    console.log(hasDeleted);
+    if (hasDeleted.acknowledged && hasDeleted.deletedCount === 1) {
+      res.status(201).json({ message: 'Die Reservierung wurde erfolgreich gelöscht' });
+      return;
+    } else {
+      res.status(400).json({ message: 'Fehler beim Löschen der Reservierung' });
+      return;
+    }
+  } catch (error) {
+    res.status(400).json({ message: 'Fehler beim Löschen der Reservierung' });
+    return;
+  }
+};

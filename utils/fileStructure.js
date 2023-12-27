@@ -39,6 +39,7 @@ export const replaceImage = async (imageFile, path, boat) => {
     const returnVal = await fs
       .access(path)
       .then(async () => {
+        console.log('first');
         // delete old picture
         await deleteImage(checkPath);
 

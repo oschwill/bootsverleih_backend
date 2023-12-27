@@ -51,7 +51,7 @@ export const saveBoat = async (req, res) => {
   const imageFile = req.file;
   boat.imagePath = null;
 
-  console.log(imageFile);
+  console.log('imageFile');
 
   // check if file
   if (imageFile) {
@@ -112,8 +112,12 @@ export const editBoat = async (req, res) => {
   const path = await boatModel.findOne({ _id: id }, { imagePath: 1, _id: 0 });
 
   if (imageFile) {
+    if (!path.imagePath) {
+    }
     // Wir replace das Bild, der Pfad inklusive Filename bleibt der gleiche!
-    const hasReplacedFile = await replaceImage(imageFile, path.imagePath, boat);
+    const hasReplacedFile = !path.imagePath
+      ? await writeImage(imageFile, boat)
+      : await replaceImage(imageFile, path.imagePath, boat);
 
     if (!hasReplacedFile) {
       res.status(500).json({
