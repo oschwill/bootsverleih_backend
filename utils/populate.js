@@ -1,28 +1,29 @@
 import boatMaterialModel from '../models/boatMaterialModel.js';
+import boatModel from '../models/boatModel.js';
 import boatTypeModel from '../models/boatTypeModel.js';
+
+const boatTypeData = [
+  { typeName: 'Tretboot' },
+  { typeName: 'Segelboot' },
+  { typeName: 'Luftkissenboot' },
+  { typeName: 'Geisterschiff' },
+  { typeName: 'Containerschiff' },
+  { typeName: 'Avengers Luftschiff' },
+];
+
+const boatMaterialData = [
+  { name: 'GFK' },
+  { name: 'Holz' },
+  { name: 'Metall' },
+  { name: 'Pappe' },
+  { name: 'Seelen' },
+  { name: 'Stahl' },
+  { name: 'Adamantium' },
+];
 
 export const initialInserts = async () => {
   // insert BoatTypes and boatMaterials
   try {
-    const boatTypeData = [
-      { typeName: 'Tretboot' },
-      { typeName: 'Segelboot' },
-      { typeName: 'Luftkissenboot' },
-      { typeName: 'Geisterschiff' },
-      { typeName: 'Containerschiff' },
-      { typeName: 'Avengers Luftschiff' },
-    ];
-
-    const boatMaterialData = [
-      { name: 'GFK' },
-      { name: 'Holz' },
-      { name: 'Metall' },
-      { name: 'Pappe' },
-      { name: 'Seelen' },
-      { name: 'Stahl' },
-      { name: 'Adamantium' },
-    ];
-
     boatTypeData.forEach(async (item) => {
       await boatTypeModel.findOneAndUpdate(item, item, { upsert: true });
     });
