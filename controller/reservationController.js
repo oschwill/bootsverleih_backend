@@ -9,6 +9,7 @@ export const saveReservation = async (req, res) => {
       reservedBoat: newReservation.boatId,
       reservedStartDate: new Date(newReservation.startDate),
       reservedEndDate: new Date(newReservation.endDate),
+      userName: req.userId,
     });
 
     newRes.save();
@@ -25,6 +26,7 @@ export const getAllReservations = async (req, res) => {
     const allReservations = await reservationModel
       .find()
       .populate('reservedBoat')
+      .populate('userName')
       .sort({ _id: -1 })
       .exec();
 

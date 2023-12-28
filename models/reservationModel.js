@@ -21,6 +21,11 @@ const reservationSchema = new mongoose.Schema({
     type: Date,
     required: [true, 'Must have a start date'],
   },
+  userName: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'userModel',
+    required: [true, 'Must belong a user'],
+  },
 });
 
 reservationSchema.pre('save', async function (next) {

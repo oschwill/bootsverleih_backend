@@ -7,6 +7,7 @@ import connectDB from './config/db.js';
 import { AppError } from './utils/appError.js';
 import { router as boatRouter } from './routes/boatRouter.js';
 import { router as reservationRouter } from './routes/reservationRouter.js';
+import { router as userRouter } from './routes/userRouter.js';
 import { createImageFolder } from './utils/fileStructure.js';
 
 const app = express();
@@ -18,13 +19,14 @@ app.use(mongoSanitize());
 // static files
 app.use('/data/images', express.static('data/images'));
 // DATABASE CONNECTION
-connectDB();
+await connectDB();
 // Image Folder erstellen
 createImageFolder();
 
 // ROUTES
 app.use('/api/v1/boats', boatRouter);
 app.use('/api/v1/reservation', reservationRouter);
+app.use('/api/v1/user', userRouter);
 
 // unhandled Routes
 app.all('*', (req, res, next) => {

@@ -3,7 +3,7 @@ import boatModel from '../models/boatModel.js';
 import boatTypeModel from '../models/boatTypeModel.js';
 import reservationModel from '../models/reservationModel.js';
 import { deleteImage, writeImage, replaceImage } from '../utils/fileStructure.js';
-import { validateData } from '../utils/validator.js';
+import { boatSchema, validateData } from '../utils/validator.js';
 
 export const getAllBoats = async (req, res) => {
   try {
@@ -66,7 +66,7 @@ export const saveBoat = async (req, res) => {
   }
 
   // Validate Incoming data
-  const value = validateData(boat, res);
+  const value = validateData(boat, res, boatSchema);
 
   if (!value) {
     return;
@@ -130,7 +130,7 @@ export const editBoat = async (req, res) => {
   }
 
   // Validate Incoming data
-  const value = validateData(boat, res);
+  const value = validateData(boat, res, boatSchema);
 
   if (!value) {
     return;
